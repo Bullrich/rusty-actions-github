@@ -15,9 +15,7 @@ jobs:
         id: version
         run: |
           TAG="v3.2.1"
-          VERSION="${TAG#v}"
-          echo "${TAG#v}"
-          echo "VERSION=$VERSION" >> $GITHUB_ENV
+          echo "VERSION=${TAG#v}" >> $GITHUB_OUTPUT
       - uses: actions/checkout@v4
       - name: Set up Python
         uses: actions/setup-python@v2
