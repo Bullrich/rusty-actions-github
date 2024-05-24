@@ -12,7 +12,6 @@ use std::{env, fs, path::Path};
 use crate::error::ActionsError;
 use json::JsonValue;
 
-
 /// Context class injected by the action worker.
 ///
 /// Find detailed documentation in
@@ -48,7 +47,7 @@ pub struct Repo {
 /// Returns a [Context] object
 ///
 /// Could return an [ActionsError] error type.
-/// ```
+/// ```rust,no_run
 /// use actions_github::context::get_context;
 /// let data = get_context().unwrap();
 /// println!("Event is {}", data.event_name);

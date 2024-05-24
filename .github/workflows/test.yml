@@ -11,21 +11,20 @@ jobs:
     name: "Test"
     strategy:
       matrix:
-        cmd: [check, fmt, clippy, doc]
-        include:
-          - cmd: fmt
-            arg: "--all -- --check"
-          - cmd: clippy
-            arg: "-- -D warnings"
+        cmd:
+          - check
+          - fmt --all -- --check
+          - clippy -- -D warnings
+          - doc
+          - test
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions-rs/toolchain@v1
-        with:
-          profile: minimal
-          toolchain: stable
-          override: true
-      - uses: actions-rs/cargo@v1
-        with:
-          command: ${{ matrix.cmd }}
-          args: ${{ matrix.arg }}
+      - uses: dtolnay/rust-toolchain@stable
+      - run: cargo ${{ matrix.cmd }}
+  conclude:
+    runs-on: ubuntu-latest
+    name: All tests passed
+    needs: [test]
+    steps:
+      - run: echo '### Good job! All the tests passed 🚀' >> $GITHUB_STEP_SUMMARY
