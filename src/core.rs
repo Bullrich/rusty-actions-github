@@ -18,3 +18,22 @@ pub fn get_input(name: &str) -> Result<String, ActionsError> {
         Err(_) => Err(ActionsError::InputNotFound(name.to_string())),
     }
 }
+
+#[cfg(test)]
+mod test{
+    use std::env;
+    use crate::core::get_input;
+
+    #[test]
+    fn returns_input_when_env_is_set() {
+        env::set_var("INPUT_EXAMPLE", "test");
+        let input = get_input("example");
+        assert_eq!(input.unwrap(), "test")
+    }
+
+    #[test]
+    fn returns_error_when_env_is_not_set() {
+        let input = get_input("test");
+        assert!(input.is_err())
+    }
+}
