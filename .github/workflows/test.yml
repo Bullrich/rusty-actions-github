@@ -29,3 +29,9 @@ jobs:
         with:
           command: ${{ matrix.cmd }}
           args: ${{ matrix.arg }}
+  conclude:
+    runs-on: ubuntu-latest
+    name: All tests passed
+    needs: [test]
+    steps:
+      - run: echo '### Good job! All the tests passed 🚀' >> $GITHUB_STEP_SUMMARY
