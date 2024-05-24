@@ -7,6 +7,7 @@ Find the [documentation here](https://docs.rs/actions-github).
 **Work in progress**: This library is being developed.
 
 ## Work in progress
+
 - [x] Context object
 - [x] get_input method
 - [ ] set_output method
@@ -23,4 +24,23 @@ use actions_github::context::get_context;
 
 let data = get_context().unwrap();
 println!("Event is {}", data.event_name);
+```
+
+Works well with [`octocrab`](https://crates.io/crates/octocrab/):
+
+```rust
+use actions_github::core::get_input;
+use actions_github::context::get_context;
+use octocrab::Octocrab;
+
+let token = get_input("GITHUB_TOKEN").unwrap();
+
+let crab = Octocrab::builder().personal_token(token).build();
+octocrab::initialise(crab.unwrap());
+
+let context = get_context();
+let org = context.repo.owner;
+let repo = context.repo.repo;
+
+let pulls = octocrab::instance().pulls(owner, repo).list()
 ```
