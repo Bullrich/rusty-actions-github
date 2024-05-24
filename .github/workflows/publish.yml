@@ -4,6 +4,7 @@ on:
   release:
     types:
       - released
+  pull_request:
 
 env:
   CI: true
@@ -35,6 +36,8 @@ jobs:
         with:
           toolchain: stable
           override: true
+      - run: cat Cargo.toml
       - uses: katyo/publish-crates@v2
+        if: github.event_name == 'push'
         with:
           registry-token: ${{ secrets.CARGO_REGISTRY_TOKEN }}
