@@ -1,12 +1,22 @@
+//! Context related utilities
+//!
+//! This is the object that the worker inject into your application.
+//!
+//! You may want to check out [Context] to find the available variable
+//! and GitHub's documentation.
+//!
+//! To obtain the context, use the method [get_context] which hydrates the object
+//! with all the values from the environment variables
 use std::{env, fs, path::Path};
 
 use crate::error::ActionsError;
 use json::JsonValue;
 
+
 /// Context class injected by the action worker.
 ///
 /// Find detailed documentation in
-/// [GitHub's documentation for Contexts](https://docs.github.com/en/actions/learn-github-actions/contexts)
+/// [GitHub's documentation for Contexts](https://docs.github.com/en/actions/learn-github-actions/contexts#github-context)
 #[derive(Debug, Clone)]
 pub struct Context {
     pub payload: JsonValue,
@@ -27,15 +37,19 @@ pub struct Context {
 }
 
 #[derive(Debug, Clone)]
+/// Container of two small values, owner and repo
 pub struct Repo {
     pub owner: String,
     pub repo: String,
 }
 
-/// Gets the context object injected by the GitHub action
+/// Gets environment variables provided by GitHub and injects them into an object
 ///
+/// Returns a [Context] object
+///
+/// Could return an [ActionsError] error type.
 /// ```
-/// # use Context;
+/// use actions_github::context::get_context;
 /// let data = get_context().unwrap();
 /// println!("Event is {}", data.event_name);
 /// ```
