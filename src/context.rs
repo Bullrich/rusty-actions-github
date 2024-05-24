@@ -1,33 +1,45 @@
 use std::{env, fs, path::Path};
 
 use json::JsonValue;
+use crate::error::ActionsError;
 
+/// Context class injected by the action worker.
+///
+/// Find detailed documentation in
+/// [GitHub's documentation for Contexts](https://docs.github.com/en/actions/learn-github-actions/contexts)
 #[derive(Debug, Clone)]
 pub struct Context {
-    payload: JsonValue,
-    event_name: String,
-    sha: String,
-    ref_: String,
-    workflow: String,
-    action: String,
-    actor: String,
-    job: String,
-    run_attempt: u8,
-    run_number: u8,
-    run_id: u128,
-    api_url: String,
-    server_url: String,
-    graphql_url: String,
-    repo: Repo,
+    pub payload: JsonValue,
+    pub event_name: String,
+    pub sha: String,
+    pub ref_: String,
+    pub workflow: String,
+    pub action: String,
+    pub actor: String,
+    pub job: String,
+    pub run_attempt: u8,
+    pub run_number: u8,
+    pub run_id: u128,
+    pub api_url: String,
+    pub server_url: String,
+    pub graphql_url: String,
+    pub repo: Repo,
 }
 
 #[derive(Debug, Clone)]
-struct Repo {
+pub struct Repo {
     owner: String,
     repo: String,
 }
 
-pub fn get_context() -> Context {
+/// Gets the context object injected by the GitHub action
+///
+/// ```
+/// # use Context;
+/// let data = get_context().unwrap();
+/// println!("Event is {}", data.event_name);
+/// ```
+pub fn get_context() -> Result<Context, ActionsError> {
     let mut payload: JsonValue = JsonValue::Null;
 
     if let Ok(github_event_path) = env::var("GITHUB_EVENT_PATH") {
@@ -44,9 +56,9 @@ pub fn get_context() -> Context {
         }
     }
 
-    let repo: Repo = get_repo(&payload);
+    let repo: Repo = get_repo(&payload)?;
 
-    Context {
+    Ok(Context {
         payload,
         event_name: get_env("GITHUB_EVENT_NAME"),
         sha: get_env("GITHUB_SHA"),
@@ -62,7 +74,7 @@ pub fn get_context() -> Context {
         server_url: get_env_or("GITHUB_SERVER_URL", "https://github.com"),
         graphql_url: get_env_or("GITHUB_GRAPHQL_URL", "https://api.github.com/graphql"),
         repo,
-    }
+    })
 }
 
 fn get_env(var_name: &str) -> String {
@@ -79,26 +91,26 @@ fn get_env_or(var_name: &str, default: &str) -> String {
     }
 }
 
-fn get_repo(payload: &JsonValue) -> Repo {
+fn get_repo(payload: &JsonValue) -> Result<Repo,ActionsError> {
     // We try to get it from the environment variable
     if let Ok(repository) = env::var("GITHUB_REPOSITORY") {
         let owner_repo = repository.split("/").collect::<Vec<&str>>();
 
-        return Repo {
+        return Ok(Repo {
             owner: owner_repo[0].to_string(),
             repo: owner_repo[1].to_string(),
-        };
+        });
     }
 
     let owner = payload["repository"]["login"]["login"].clone();
     let repo = payload["repository"]["name"].clone();
 
-    if owner.is_null() || repo.is_null() {
-        panic!("context.repo requires a GITHUB_REPOSITORY environment variable like 'owner/repo'")
+    return if owner.is_null() || repo.is_null() {
+        Err(ActionsError::Context("context.repo requires a GITHUB_REPOSITORY environment variable like 'owner/repo'".to_string()))
     } else {
-        return Repo {
+        Ok(Repo {
             owner: owner.to_string(),
             repo: repo.to_string(),
-        };
+        })
     }
 }
