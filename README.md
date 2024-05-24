@@ -8,7 +8,7 @@ Find the [documentation here](https://docs.rs/actions-github).
 
 ## Work in progress
 - [x] Context object
-- [ ] get_input method
+- [x] get_input method
 - [ ] set_output method
 - [ ] logging methods
 
