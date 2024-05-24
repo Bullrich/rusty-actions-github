@@ -15,8 +15,9 @@ jobs:
         id: version
         run: |
           TAG="v3.2.1"
+          VERSION="${TAG#v}"
           echo "${TAG#v}"
-          echo "VERSION=${TAG#v}" >> $GITHUB_ENV
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
       - uses: actions/checkout@v4
       - name: Set up Python
         uses: actions/setup-python@v2
@@ -26,7 +27,7 @@ jobs:
       - name: Edit Toml version
         run: toml set --toml-path Cargo.toml package.version $VERSION
         env:
-          VERSION: "${{ steps.version.outputs.VERSION }}"
+          VERSION: ${{ steps.version.outputs.VERSION }}
       - uses: actions-rs/toolchain@v1
         with:
           toolchain: stable
