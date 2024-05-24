@@ -10,7 +10,8 @@ use crate::error::ActionsError;
 /// This method was copied
 /// from [core.ts](https://github.com/actions/toolkit/blob/d1df13e178816d69d96bdc5c753b36a66ad03728/packages/core/src/core.ts#L126)
 pub fn get_input(name:&str)-> Result<String,ActionsError> {
-    let clean_input = str::replace(name, ' ', "_");
+    let mut clean_input = str::replace(name, ' ', "_");
+    clean_input.insert_str(0, "INPUT_");
     let value = env::var(clean_input.to_uppercase());
     match value {
         Ok(input) => Ok(input),
