@@ -28,8 +28,8 @@ pub struct Context {
 
 #[derive(Debug, Clone)]
 pub struct Repo {
-    owner: String,
-    repo: String,
+    pub owner: String,
+    pub repo: String,
 }
 
 /// Gets the context object injected by the GitHub action
@@ -94,7 +94,7 @@ fn get_env_or(var_name: &str, default: &str) -> String {
 fn get_repo(payload: &JsonValue) -> Result<Repo, ActionsError> {
     // We try to get it from the environment variable
     if let Ok(repository) = env::var("GITHUB_REPOSITORY") {
-        let owner_repo = repository.split("/").collect::<Vec<&str>>();
+        let owner_repo = repository.split('/').collect::<Vec<&str>>();
 
         return Ok(Repo {
             owner: owner_repo[0].to_string(),
@@ -105,7 +105,7 @@ fn get_repo(payload: &JsonValue) -> Result<Repo, ActionsError> {
     let owner = payload["repository"]["login"]["login"].clone();
     let repo = payload["repository"]["name"].clone();
 
-    return if owner.is_null() || repo.is_null() {
+    if owner.is_null() || repo.is_null() {
         Err(ActionsError::Context(
             "context.repo requires a GITHUB_REPOSITORY environment variable like 'owner/repo'"
                 .to_string(),
@@ -115,5 +115,5 @@ fn get_repo(payload: &JsonValue) -> Result<Repo, ActionsError> {
             owner: owner.to_string(),
             repo: repo.to_string(),
         })
-    };
+    }
 }

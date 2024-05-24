@@ -1,5 +1,5 @@
-mod context;
-mod error;
+pub mod context;
+pub mod error;
 
 #[doc = include_str!("../README.md")]
 
