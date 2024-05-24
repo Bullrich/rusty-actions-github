@@ -7,6 +7,7 @@ use std::fmt::{Display, Formatter};
 pub enum ActionsError {
     /// This error happened while generating the context object
     Context(String),
+    InputNotFound(String)
 }
 
 impl Error for ActionsError {}
