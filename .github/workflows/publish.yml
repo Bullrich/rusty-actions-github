@@ -14,7 +14,8 @@ jobs:
       - name: Clean variable
         id: version
         run: |
-          TAG=${{ github.event.release.tag_name }}
+          TAG="v3.2.1"
+          echo "${TAG#v}"
           echo "VERSION=${TAG#v}" >> $GITHUB_ENV
       - uses: actions/checkout@v4
       - name: Set up Python
