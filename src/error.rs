@@ -1,5 +1,5 @@
-use std::fmt::{Display, Formatter};
 use std::error::Error;
+use std::fmt::{Display, Formatter};
 
 #[derive(Debug)]
 #[non_exhaustive]
@@ -15,8 +15,8 @@ impl Display for ActionsError {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         use ActionsError::*;
 
-        match self{
-            Context(msg) => write!(f, "Problem while generating the context: {}", msg)
+        match self {
+            Context(msg) => write!(f, "Problem while generating the context: {}", msg),
         }
     }
 }

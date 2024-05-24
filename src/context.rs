@@ -1,7 +1,7 @@
 use std::{env, fs, path::Path};
 
-use json::JsonValue;
 use crate::error::ActionsError;
+use json::JsonValue;
 
 /// Context class injected by the action worker.
 ///
@@ -91,7 +91,7 @@ fn get_env_or(var_name: &str, default: &str) -> String {
     }
 }
 
-fn get_repo(payload: &JsonValue) -> Result<Repo,ActionsError> {
+fn get_repo(payload: &JsonValue) -> Result<Repo, ActionsError> {
     // We try to get it from the environment variable
     if let Ok(repository) = env::var("GITHUB_REPOSITORY") {
         let owner_repo = repository.split("/").collect::<Vec<&str>>();
@@ -106,11 +106,14 @@ fn get_repo(payload: &JsonValue) -> Result<Repo,ActionsError> {
     let repo = payload["repository"]["name"].clone();
 
     return if owner.is_null() || repo.is_null() {
-        Err(ActionsError::Context("context.repo requires a GITHUB_REPOSITORY environment variable like 'owner/repo'".to_string()))
+        Err(ActionsError::Context(
+            "context.repo requires a GITHUB_REPOSITORY environment variable like 'owner/repo'"
+                .to_string(),
+        ))
     } else {
         Ok(Repo {
             owner: owner.to_string(),
             repo: repo.to_string(),
         })
-    }
+    };
 }
