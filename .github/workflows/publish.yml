@@ -22,12 +22,15 @@ jobs:
           TAG=${{ github.event.release.tag_name }}
           echo "VERSION=${TAG#v}" >> $GITHUB_ENV
       - uses: actions/checkout@v4
-      - name: Edit Toml
-        uses: ciiiii/toml-editor@1.0.0
+      - name: Set up Python
+        uses: actions/setup-python@v2
         with:
-          file: "Cargo.toml"
-          key: "version"
-          value: "${{ steps.version.outputs.VERSION }}"
+          python-version: 3.8
+      - run: pip install toml-cli
+      - name: Edit Toml version
+        run: toml set --toml-path Cargo.toml package.version $VERSION
+        env:
+          VERSION: "${{ steps.version.outputs.VERSION }}"
       - uses: actions-rs/toolchain@v1
         with:
           toolchain: stable
