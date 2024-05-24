@@ -7,7 +7,8 @@ use std::fmt::{Display, Formatter};
 pub enum ActionsError {
     /// This error happened while generating the context object
     Context(String),
-    InputNotFound(String)
+    /// The input was not found
+    InputNotFound(String),
 }
 
 impl Error for ActionsError {}
@@ -18,6 +19,7 @@ impl Display for ActionsError {
 
         match self {
             Context(msg) => write!(f, "Problem while generating the context: {}", msg),
+            InputNotFound(input) => write!(f, "Input required and not supplied: {}", input),
         }
     }
 }
