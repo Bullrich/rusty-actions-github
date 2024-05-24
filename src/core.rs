@@ -20,9 +20,9 @@ pub fn get_input(name: &str) -> Result<String, ActionsError> {
 }
 
 #[cfg(test)]
-mod test{
-    use std::env;
+mod test {
     use crate::core::get_input;
+    use std::env;
 
     #[test]
     fn returns_input_when_env_is_set() {
