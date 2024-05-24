@@ -12,7 +12,6 @@ use std::{env, fs, path::Path};
 use crate::error::ActionsError;
 use json::JsonValue;
 
-
 /// Context class injected by the action worker.
 ///
 /// Find detailed documentation in
