@@ -11,7 +11,7 @@ jobs:
     name: "Test"
     strategy:
       matrix:
-        cmd: [check, fmt, clippy, doc]
+        cmd: [check, fmt, clippy, doc, test]
         include:
           - cmd: fmt
             arg: "--all -- --check"
