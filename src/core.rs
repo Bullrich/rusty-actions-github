@@ -1,8 +1,12 @@
-use std::env;
+//! Utility methods to interact with the GitHub actions ecosystem
+//!
+//! You can obtain injected inputs or produce an output for another step
+use std::io::Write;
+use std::{env, io};
 
 use crate::error::ActionsError;
+use crate::util::{issue_file_command, issue_old_command, prepare_key_value_message, EOL};
 
-// Implemented from https://github.com/actions/toolkit/blob/main/packages/core/src/core.ts#L126
 /// Obtain an input from a variable
 ///
 /// If the input is not found, an [ActionsError] is returned
@@ -19,9 +23,33 @@ pub fn get_input(name: &str) -> Result<String, ActionsError> {
     }
 }
 
+/// Produces an [output](https://docs.github.com/en/actions/using-workflows/workflow-commands-for-github-actions#setting-an-output-parameter)
+/// that can be used in another step
+///
+/// ```rust
+/// set_output("name", "value");
+/// ```
+pub fn set_output(name: &str, value: &str) -> Result<(), ActionsError> {
+    if env::var("GITHUB_OUTPUT").is_ok() {
+        return match prepare_key_value_message(name, value) {
+            Ok(key_value_message) => match issue_file_command("OUTPUT", key_value_message) {
+                Ok(_) => Ok(()),
+                Err(err) => Err(ActionsError::Output(err)),
+            },
+            Err(err) => Err(ActionsError::Output(err)),
+        };
+    }
+
+    io::stdout()
+        .write_all(EOL.as_bytes())
+        .expect("Failed to write EOL");
+    issue_old_command("set-output", name, value);
+    Ok(())
+}
+
 #[cfg(test)]
 mod test {
-    use crate::core::get_input;
+    use crate::core::{get_input, set_output};
     use std::env;
 
     #[test]
@@ -35,5 +63,10 @@ mod test {
     fn returns_error_when_env_is_not_set() {
         let input = get_input("test");
         assert!(input.is_err())
+    }
+
+    #[test]
+    fn writes_output() {
+        assert!(set_output("hi", "bye").is_ok());
     }
 }

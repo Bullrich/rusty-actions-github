@@ -4,13 +4,16 @@ A rust translation of [@actions/github](https://www.npmjs.com/package/@actions/g
 
 Find the [documentation here](https://docs.rs/actions-github).
 
+[![latest version](https://img.shields.io/crates/v/actions-github)](https://crates.io/crates/actions-github)
+![Crates.io Total Downloads](https://img.shields.io/crates/d/actions-github)
+
 **Work in progress**: This library is being developed.
 
 ## Work in progress
 
 - [x] Context object
 - [x] get_input method
-- [ ] set_output method
+- [x] set_output method
 - [ ] logging methods
 
 ## Installation
@@ -29,7 +32,7 @@ println!("Event is {}", data.event_name);
 Works well with [`octocrab`](https://crates.io/crates/octocrab/):
 
 ```rust
-use actions_github::core::get_input;
+use actions_github::core::{get_input, set_output};
 use actions_github::context::get_context;
 use octocrab::Octocrab;
 
@@ -43,4 +46,7 @@ let org = context.repo.owner;
 let repo = context.repo.repo;
 
 let pulls = octocrab::instance().pulls(owner, repo).list()
+
+// Output how many PRs are in the repository
+set_output("PRs", pulls.len().to_string);
 ```
