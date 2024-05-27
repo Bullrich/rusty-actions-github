@@ -4,6 +4,9 @@ A rust translation of [@actions/github](https://www.npmjs.com/package/@actions/g
 
 Find the [documentation here](https://docs.rs/actions-github).
 
+[![latest version](https://img.shields.io/crates/v/actions-github)](https://crates.io/crates/actions-github)
+![Crates.io Total Downloads](https://img.shields.io/crates/d/actions-github)
+
 **Work in progress**: This library is being developed.
 
 ## Work in progress
