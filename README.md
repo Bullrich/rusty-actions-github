@@ -2,6 +2,8 @@
 
 A rust translation of [@actions/github](https://www.npmjs.com/package/@actions/github).
 
+![GitHub Actions](https://img.shields.io/badge/github%20actions-%232671E5.svg?style=for-the-badge&logo=githubactions&logoColor=white)
+
 Find the [documentation here](https://docs.rs/actions-github).
 
 [![latest version](https://img.shields.io/crates/v/actions-github)](https://crates.io/crates/actions-github)

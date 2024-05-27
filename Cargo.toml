@@ -8,9 +8,7 @@ readme = "README.md"
 repository = "https://github.com/Bullrich/rusty-actions-github"
 license = "MIT"
 keywords = ["github", "actions"]
-
-[lib]
-doctest = false
+documentation = "https://docs.rs/actions-github/latest/actions_github/"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
