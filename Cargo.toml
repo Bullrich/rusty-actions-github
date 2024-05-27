@@ -16,3 +16,4 @@ doctest = false
 
 [dependencies]
 json = "0.12.4"
+uuid = { version = "1.8.0", features = ["v4"] }
