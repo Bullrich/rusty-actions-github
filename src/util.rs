@@ -1,20 +1,24 @@
-use std::{env, io};
 use std::fs;
 use std::io::Write;
 use std::path::Path;
+use std::{env, io};
 use uuid::Uuid;
 
-
 #[cfg(windows)]
-pub const EOL:&str = "\r\n";
+pub const EOL: &str = "\r\n";
 #[cfg(not(windows))]
-pub const EOL:&str = "\n";
+pub const EOL: &str = "\n";
 
 pub fn issue_file_command(command: &str, message: String) -> Result<(), String> {
     let env_var = format!("GITHUB_{}", command);
     let file_path = match env::var(&env_var) {
         Ok(path) => path,
-        Err(_) => return Err(format!("Unable to find environment variable for file command {}", command)),
+        Err(_) => {
+            return Err(format!(
+                "Unable to find environment variable for file command {}",
+                command
+            ))
+        }
     };
 
     if !Path::new(&file_path).exists() {
@@ -57,10 +61,15 @@ pub fn prepare_key_value_message(key: &str, value: &str) -> Result<String, Strin
         ));
     }
 
-    Ok(format!("{}<<{}{}{}{}{}", key, delimiter, EOL, value, EOL, delimiter))
+    Ok(format!(
+        "{}<<{}{}{}{}{}",
+        key, delimiter, EOL, value, EOL, delimiter
+    ))
 }
 
-pub fn issue_old_command(command:&str, name:&str, value: &str) {
-    let msg:String = format!("::{} name={}::{}", command, name, value);
-    io::stdout().write_all((msg.to_string() + EOL).as_bytes()).expect("Failed to write command")
+pub fn issue_old_command(command: &str, name: &str, value: &str) {
+    let msg: String = format!("::{} name={}::{}", command, name, value);
+    io::stdout()
+        .write_all((msg.to_string() + EOL).as_bytes())
+        .expect("Failed to write command")
 }

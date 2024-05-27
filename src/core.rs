@@ -1,11 +1,11 @@
 //! Utility methods to interact with the GitHub actions ecosystem
 //!
 //! You can obtain injected inputs or produce an output for another step
-use std::{env, io};
 use std::io::Write;
+use std::{env, io};
 
 use crate::error::ActionsError;
-use crate::util::{EOL, issue_file_command, issue_old_command, prepare_key_value_message};
+use crate::util::{issue_file_command, issue_old_command, prepare_key_value_message, EOL};
 
 /// Obtain an input from a variable
 ///
@@ -29,18 +29,20 @@ pub fn get_input(name: &str) -> Result<String, ActionsError> {
 /// ```rust
 /// set_output("name", "value");
 /// ```
-pub fn set_output(name:&str, value:&str) -> Result<(), ActionsError> {
+pub fn set_output(name: &str, value: &str) -> Result<(), ActionsError> {
     if let Ok(_) = env::var("GITHUB_OUTPUT") {
         return match prepare_key_value_message(name, value) {
-            Ok(key_value_message) => match issue_file_command("OUTPUT", key_value_message){
+            Ok(key_value_message) => match issue_file_command("OUTPUT", key_value_message) {
                 Ok(_) => Ok(()),
-                Err(err) => Err(ActionsError::Output(err))
+                Err(err) => Err(ActionsError::Output(err)),
             },
-            Err(err) => Err(ActionsError::Output(err))
-        }
+            Err(err) => Err(ActionsError::Output(err)),
+        };
     }
 
-    io::stdout().write_all(EOL.as_bytes()).expect("Failed to write EOL");
+    io::stdout()
+        .write_all(EOL.as_bytes())
+        .expect("Failed to write EOL");
     issue_old_command("set-output", name, value);
     Ok(())
 }
