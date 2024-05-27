@@ -90,7 +90,7 @@ pub fn get_context() -> Result<Context, ActionsError> {
     })
 }
 
-fn get_env(var_name: &str) -> Result<String,ActionsError> {
+fn get_env(var_name: &str) -> Result<String, ActionsError> {
     match env::var(var_name) {
         Ok(var) => Ok(var),
         Err(_) => Err(ActionsError::Context(var_name.to_string())),

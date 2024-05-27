@@ -10,6 +10,7 @@ jobs:
   test:
     name: "Test"
     strategy:
+      fail-fast: true
       matrix:
         cmd:
           - check
