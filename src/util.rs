@@ -11,7 +11,7 @@ pub const EOL: &str = "\n";
 
 pub fn issue_file_command(command: &str, message: String) -> Result<(), String> {
     let env_var = format!("GITHUB_{}", command);
-    let file_path = match env::var(&env_var) {
+    let file_path = match env::var(env_var) {
         Ok(path) => path,
         Err(_) => {
             return Err(format!(
@@ -25,16 +25,12 @@ pub fn issue_file_command(command: &str, message: String) -> Result<(), String> 
         return Err(format!("Missing file at path: {}", file_path));
     }
 
-    let mut file = match fs::OpenOptions::new()
-        .write(true)
-        .append(true)
-        .open(&file_path)
-    {
+    let mut file = match fs::OpenOptions::new().append(true).open(&file_path) {
         Ok(f) => f,
         Err(_) => return Err(format!("Unable to open file at path: {}", file_path)),
     };
 
-    if let Err(_) = writeln!(file, "{}{}", message, EOL) {
+    if writeln!(file, "{}{}", message, EOL).is_err() {
         return Err(format!("Unable to write to file at path: {}", file_path));
     }
 

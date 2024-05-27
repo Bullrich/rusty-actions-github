@@ -30,7 +30,7 @@ pub fn get_input(name: &str) -> Result<String, ActionsError> {
 /// set_output("name", "value");
 /// ```
 pub fn set_output(name: &str, value: &str) -> Result<(), ActionsError> {
-    if let Ok(_) = env::var("GITHUB_OUTPUT") {
+    if env::var("GITHUB_OUTPUT").is_ok() {
         return match prepare_key_value_message(name, value) {
             Ok(key_value_message) => match issue_file_command("OUTPUT", key_value_message) {
                 Ok(_) => Ok(()),
