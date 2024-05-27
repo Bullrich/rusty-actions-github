@@ -8,15 +8,6 @@ Find the [documentation here](https://docs.rs/actions-github).
 
 ![Crates.io Total Downloads](https://img.shields.io/crates/d/actions-github)
 
-**Work in progress**: This library is being developed.
-
-## Work in progress
-
-- [x] Context object
-- [x] get_input method
-- [x] set_output method
-- [x] logging methods
-
 ## Installation
 
 `cargo add actions-github`
