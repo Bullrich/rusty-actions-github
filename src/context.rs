@@ -73,16 +73,16 @@ pub fn get_context() -> Result<Context, ActionsError> {
 
     Ok(Context {
         payload,
-        event_name: get_env("GITHUB_EVENT_NAME"),
-        sha: get_env("GITHUB_SHA"),
-        ref_: get_env("GITHUB_REF"),
-        workflow: get_env("GITHUB_WORKFLOW"),
-        action: get_env("GITHUB_ACTION"),
-        actor: get_env("GITHUB_ACTOR"),
-        job: get_env("GITHUB_JOB"),
-        run_attempt: get_env("GITHUB_RUN_ATTEMPT").parse::<u8>().unwrap(),
-        run_number: get_env("GITHUB_RUN_NUMBER").parse::<u8>().unwrap(),
-        run_id: get_env("GITHUB_RUN_ID").parse::<u128>().unwrap(),
+        event_name: get_env("GITHUB_EVENT_NAME")?,
+        sha: get_env("GITHUB_SHA")?,
+        ref_: get_env("GITHUB_REF")?,
+        workflow: get_env("GITHUB_WORKFLOW")?,
+        action: get_env("GITHUB_ACTION")?,
+        actor: get_env("GITHUB_ACTOR")?,
+        job: get_env("GITHUB_JOB")?,
+        run_attempt: get_env("GITHUB_RUN_ATTEMPT")?.parse::<u8>().unwrap(),
+        run_number: get_env("GITHUB_RUN_NUMBER")?.parse::<u8>().unwrap(),
+        run_id: get_env("GITHUB_RUN_ID")?.parse::<u128>().unwrap(),
         api_url: get_env_or("GITHUB_API_URL", "https://api.github.com"),
         server_url: get_env_or("GITHUB_SERVER_URL", "https://github.com"),
         graphql_url: get_env_or("GITHUB_GRAPHQL_URL", "https://api.github.com/graphql"),
@@ -90,10 +90,10 @@ pub fn get_context() -> Result<Context, ActionsError> {
     })
 }
 
-fn get_env(var_name: &str) -> String {
+fn get_env(var_name: &str) -> Result<String,ActionsError> {
     match env::var(var_name) {
-        Ok(var) => var,
-        Err(_) => panic!("Variable {} not defined", var_name),
+        Ok(var) => Ok(var),
+        Err(_) => Err(ActionsError::Context(var_name.to_string())),
     }
 }
 
