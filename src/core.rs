@@ -67,6 +67,6 @@ mod test {
 
     #[test]
     fn writes_output() {
-        set_output("hi", "bye");
+        assert!(set_output("hi", "bye").is_ok());
     }
 }
