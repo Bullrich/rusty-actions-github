@@ -13,6 +13,16 @@ use crate::util::{issue_file_command, issue_old_command, prepare_key_value_messa
 ///
 /// This method was copied
 /// from [core.ts](https://github.com/actions/toolkit/blob/d1df13e178816d69d96bdc5c753b36a66ad03728/packages/core/src/core.ts#L126)
+///
+/// ```rust
+/// use actions_github::logger;
+/// use actions_github::core;
+///
+/// let name = core::get_input("name").unwrap_or_else(|_| {
+///     logger::warn_log("Input 'name' was not defined");
+///     String::from("")
+/// });
+/// ```
 pub fn get_input(name: &str) -> Result<String, ActionsError> {
     let mut clean_input = str::replace(name, ' ', "_");
     clean_input.insert_str(0, "INPUT_");

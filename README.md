@@ -6,7 +6,6 @@ A rust translation of [@actions/github](https://www.npmjs.com/package/@actions/g
 
 Find the [documentation here](https://docs.rs/actions-github).
 
-[![latest version](https://img.shields.io/crates/v/actions-github)](https://crates.io/crates/actions-github)
 ![Crates.io Total Downloads](https://img.shields.io/crates/d/actions-github)
 
 **Work in progress**: This library is being developed.
@@ -22,13 +21,22 @@ Find the [documentation here](https://docs.rs/actions-github).
 
 `cargo add actions-github`
 
+Latest version available is [![latest version](https://img.shields.io/crates/v/actions-github)](https://crates.io/crates/actions-github)
+
 ## Usage
 
 ```rust,ignore
+// Obtain the context from the action worker
 use actions_github::context::get_context;
+use actions_github::logger;
 
+logger::info("Obtaining context");
 let data = get_context().unwrap();
-println!("Event is {}", data.event_name);
+
+logger::debug(format!("Event is {}", data.event_name).as_str());
+
+// Produce an output
+set_output("is_pr", (ctx.event_name == "pull_request").to_string());
 ```
 
 Works well with [`octocrab`](https://crates.io/crates/octocrab/):
@@ -50,5 +58,5 @@ let repo = context.repo.repo;
 let pulls = octocrab::instance().pulls(owner, repo).list()
 
 // Output how many PRs are in the repository
-set_output("PRs", pulls.len().to_string);
+set_output("PRs", pulls.len().to_string());
 ```

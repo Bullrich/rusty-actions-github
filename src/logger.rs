@@ -30,7 +30,7 @@ pub fn debug_log(msg: &str) {
 ///
 /// ```rust
 /// use actions_github::logger;
-/// logger::info("Finished analyzing project");
+/// logger::info(format!("Finished analyzing {}", "project").as_str());
 /// ```
 pub fn info(msg: &str) {
     io::stdout()
