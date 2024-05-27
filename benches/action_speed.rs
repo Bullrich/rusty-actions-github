@@ -1,9 +1,14 @@
+use std::env;
+
 use actions_github::core::{get_input, set_output};
+use actions_github::logger;
 use actions_github::logger::{
-    debug_log, error_log, info, is_debug, notice_log, warn_log, LogParameters,
+    debug_log, error_log, info, is_debug, notice_log, warn_log,
 };
 
 fn main() {
+    // Disable logs
+    env::set_var("LOG_DEBUG", "true");
     // Run registered benchmarks.
     divan::main();
 }
@@ -35,15 +40,7 @@ fn get_debug_benchmark() {
 fn log_benchmark(msg: &str) {
     debug_log(msg);
     info(msg);
-    warn_log(msg, Option::None);
-    error_log(msg, Option::None);
-    notice_log(
-        msg,
-        Option::Some(LogParameters {
-            title: String::from("Example"),
-            file: String::from("benches/action_speed.rs"),
-            line: 44,
-            end_line: 46,
-        }),
-    );
+    warn_log(msg, None);
+    error_log(msg, None);
+    notice_log(msg, None);
 }
