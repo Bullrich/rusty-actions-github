@@ -62,5 +62,5 @@ pub fn prepare_key_value_message(key: &str, value: &str) -> Result<String, Strin
 
 pub fn issue_old_command(command:&str, name:&str, value: &str) {
     let msg:String = format!("::{} name={}::{}", command, name, value);
-    io::stdout().write_all((msg.to_string() + EOL).as_bytes()).expect("Failed to write command");
+    io::stdout().write_all((msg.to_string() + EOL).as_bytes()).expect("Failed to write command")
 }
