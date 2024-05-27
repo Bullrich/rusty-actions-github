@@ -10,6 +10,6 @@ fn main() {
 fn set_output_benchmark(value: &str) {
     match set_output("name", value) {
         Ok(_) => {}
-        Err(err) => panic!("{:#?}", err)
+        Err(err) => panic!("{:#?}", err),
     }
 }
