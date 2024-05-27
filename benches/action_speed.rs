@@ -2,9 +2,7 @@ use std::env;
 
 use actions_github::core::{get_input, set_output};
 use actions_github::logger;
-use actions_github::logger::{
-    debug_log, error_log, info, is_debug, notice_log, warn_log,
-};
+use actions_github::logger::{debug_log, error_log, info, is_debug, notice_log, warn_log};
 
 fn main() {
     // Disable logs
