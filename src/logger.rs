@@ -7,10 +7,10 @@ use crate::util::EOL;
 
 #[derive(Debug)]
 pub struct LogParameters {
-    title: String,
-    file: String,
-    line: u16,
-    end_line: u16,
+    pub title: String,
+    pub file: String,
+    pub line: u16,
+    pub end_line: u16,
 }
 
 impl Display for LogParameters {

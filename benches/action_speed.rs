@@ -1,5 +1,7 @@
 use actions_github::core::{get_input, set_output};
-use actions_github::logger::{debug_log, error_log, info, is_debug, notice_log, warn_log};
+use actions_github::logger::{
+    debug_log, error_log, info, is_debug, notice_log, warn_log, LogParameters,
+};
 
 fn main() {
     // Run registered benchmarks.
@@ -35,5 +37,13 @@ fn log_benchmark(msg: &str) {
     info(msg);
     warn_log(msg, Option::None);
     error_log(msg, Option::None);
-    notice_log(msg, Option::None);
+    notice_log(
+        msg,
+        Option::Some(LogParameters {
+            title: String::from("Example"),
+            file: String::from("benches/action_speed.rs"),
+            line: 44,
+            end_line: 46,
+        }),
+    );
 }
