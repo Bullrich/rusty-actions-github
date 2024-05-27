@@ -8,6 +8,19 @@ Find the [documentation here](https://docs.rs/actions-github).
 
 ![Crates.io Total Downloads](https://img.shields.io/crates/d/actions-github)
 
+## Supported features
+
+- `get_input`
+- `set_output`
+- `get_context`: Returns a hydrated context object
+- logging
+  - `debug`
+  - `info`
+  - `notice` (with annotations)
+  - `warn` (with annotations)
+  - `error` (with annotations)
+  - `is_debug`
+
 ## Installation
 
 `cargo add actions-github`
