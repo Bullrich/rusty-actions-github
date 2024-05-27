@@ -33,7 +33,7 @@ fn get_debug_benchmark() {
 fn log_benchmark(msg: &str) {
     debug_log(msg);
     info(msg);
-    warn_log(msg);
-    error_log(msg);
-    notice_log(msg);
+    warn_log(msg, Option::None);
+    error_log(msg, Option::None);
+    notice_log(msg, Option::None);
 }
