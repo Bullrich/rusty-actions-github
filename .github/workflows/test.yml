@@ -30,4 +30,5 @@ jobs:
     name: All tests passed
     needs: [test]
     steps:
+      - run: echo '::warn::Finished job'
       - run: echo '### Good job! All the tests passed 🚀' >> $GITHUB_STEP_SUMMARY
