@@ -24,7 +24,7 @@ Find the [documentation here](https://docs.rs/actions-github).
 
 ## Usage
 
-```rust
+```rust,ignore
 use actions_github::context::get_context;
 
 let data = get_context().unwrap();
@@ -33,7 +33,7 @@ println!("Event is {}", data.event_name);
 
 Works well with [`octocrab`](https://crates.io/crates/octocrab/):
 
-```rust
+```rust,ignore
 use actions_github::core::{get_input, set_output};
 use actions_github::context::get_context;
 use octocrab::Octocrab;

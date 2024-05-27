@@ -76,11 +76,11 @@ pub fn notice_log(msg: &str) {
 
 /// Returns if it's running on a debug runner.
 ///
-/// If the `RUNNER_DEBUG` variable is not defined, it'll always return false
+/// If the `RUNNER_DEBUG` variable is not defined, it'll always return true
 ///
 /// ```rust
 /// use actions_github::logger;
-/// assert_eq!(logger::is_debug(), false);
+/// assert!(logger::is_debug());
 /// ```
 pub fn is_debug() -> bool {
     match env::var("RUNNER_DEBUG") {

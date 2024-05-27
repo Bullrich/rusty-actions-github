@@ -27,7 +27,10 @@ pub fn get_input(name: &str) -> Result<String, ActionsError> {
 /// that can be used in another step
 ///
 /// ```rust
-/// set_output("name", "value");
+/// use actions_github::core;
+/// if let Err(err) = core::set_output("name", "value") {
+///     panic!("{:#?}", err);
+/// }
 /// ```
 pub fn set_output(name: &str, value: &str) -> Result<(), ActionsError> {
     if env::var("GITHUB_OUTPUT").is_ok() {
