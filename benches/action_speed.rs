@@ -1,5 +1,4 @@
 use actions_github::core::{get_input, set_output};
-use actions_github::error::ActionsError;
 use actions_github::logger::{debug_log, error_log, info, is_debug, notice_log, warn_log};
 
 fn main() {
