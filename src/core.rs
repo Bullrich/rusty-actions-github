@@ -19,7 +19,7 @@ use crate::util::{issue_file_command, issue_old_command, prepare_key_value_messa
 /// use actions_github::core;
 ///
 /// let name = core::get_input("name").unwrap_or_else(|_| {
-///     logger::warn_log("Input 'name' was not defined");
+///     logger::warn_log("Input 'name' was not defined", Option::None);
 ///     String::from("")
 /// });
 /// ```
