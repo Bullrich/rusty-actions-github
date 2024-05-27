@@ -16,7 +16,7 @@ Find the [documentation here](https://docs.rs/actions-github).
 - [x] Context object
 - [x] get_input method
 - [x] set_output method
-- [ ] logging methods
+- [x] logging methods
 
 ## Installation
 
