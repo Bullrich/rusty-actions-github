@@ -19,6 +19,7 @@ jobs:
           - doc
           - test
           - build --release
+          - bench
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4

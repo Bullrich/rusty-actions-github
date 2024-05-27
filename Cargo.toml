@@ -15,3 +15,10 @@ documentation = "https://docs.rs/actions-github/latest/actions_github/"
 [dependencies]
 json = "0.12.4"
 uuid = { version = "1.8.0", features = ["v4"] }
+
+[dev-dependencies]
+divan = "0.1.14"
+
+[[bench]]
+name = "action_speed"
+harness = false
