@@ -32,12 +32,13 @@ Latest version available is [![latest version](https://img.shields.io/crates/v/a
 ```rust,ignore
 // Obtain the context from the action worker
 use actions_github::context::get_context;
+use actions_github::core::set_output;
 use actions_github::logger;
 
 logger::info("Obtaining context");
-let data = get_context().unwrap();
+let ctx = get_context().unwrap();
 
-logger::debug(format!("Event is {}", data.event_name).as_str());
+logger::debug_log(format!("Event is {}", ctx.event_name).as_str());
 
 // Produce an output
 set_output("is_pr", (ctx.event_name == "pull_request").to_string());
