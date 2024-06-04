@@ -8,6 +8,7 @@
 //! To obtain the context, use the method [get_context] which hydrates the object
 //! with all the values from the environment variables
 use std::{env, fs, path::Path};
+use std::io::ErrorKind;
 
 use crate::error::ActionsError;
 use json::JsonValue;
@@ -56,16 +57,16 @@ pub fn get_context() -> Result<Context, ActionsError> {
     let mut payload: JsonValue = JsonValue::Null;
 
     if let Ok(github_event_path) = env::var("GITHUB_EVENT_PATH") {
-        if Path::new(&github_event_path).exists() {
-            match fs::read_to_string(&github_event_path) {
-                Ok(content) => match json::parse(&content) {
-                    Ok(parsed_json) => payload = parsed_json,
-                    Err(err) => println!("Failed to parse JSON: {}", err),
-                },
-                Err(err) => println!("Failed to read file: {}", err),
+
+        match fs::read_to_string(&github_event_path) {
+            Ok(content) => match json::parse(&content) {
+                Ok(parsed_json) => payload = parsed_json,
+                Err(err) => println!("Failed to parse JSON {}", err),
             }
-        } else {
-            println!("GITHUB_EVENT_PATH {} does not exist", github_event_path)
+            Err(err) if err.kind() == ErrorKind::NotFound => {
+                println!("GITHUB_EVENT_PATH {} does not exist", github_event_path)
+            },
+            Err(err) => println!("Failed to read file {}", err)
         }
     }
 
