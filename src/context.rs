@@ -13,6 +13,7 @@ use std::{env, fs};
 use json::JsonValue;
 
 use crate::error::ActionsError;
+use crate::logger::error_log;
 
 /// Context class injected by the action worker.
 ///
@@ -61,12 +62,13 @@ pub fn get_context() -> Result<Context, ActionsError> {
         match fs::read_to_string(&github_event_path) {
             Ok(content) => match json::parse(&content) {
                 Ok(parsed_json) => payload = parsed_json,
-                Err(err) => println!("Failed to parse JSON {}", err),
+                Err(err) => error_log(format!("Failed to parse JSON {}", err).as_str(), None),
             },
-            Err(err) if err.kind() == ErrorKind::NotFound => {
-                println!("GITHUB_EVENT_PATH {} does not exist", github_event_path)
-            }
-            Err(err) => println!("Failed to read file {}", err),
+            Err(err) if err.kind() == ErrorKind::NotFound => error_log(
+                format!("GITHUB_EVENT_PATH {} does not exist", github_event_path).as_str(),
+                None,
+            ),
+            Err(err) => error_log(format!("Failed to read file {}", err).as_str(), None),
         }
     }
 
