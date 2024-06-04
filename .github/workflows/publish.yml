@@ -1,0 +1,35 @@
+name: Cargo Release
+
+on:
+  release:
+    types:
+      - released
+
+jobs:
+  publish:
+    name: Publish to Crates.io
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clean variable
+        id: version
+        run: |
+          TAG="${{ github.event.release.tag_name }}"
+          echo "VERSION=${TAG#v}" >> $GITHUB_OUTPUT
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+      - run: pip install toml-cli
+      - name: Edit Toml version
+        run: toml set --toml-path Cargo.toml package.version $VERSION
+        env:
+          VERSION: ${{ steps.version.outputs.VERSION }}
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          override: true
+      - uses: katyo/publish-crates@v2
+        with:
+          registry-token: ${{ secrets.CARGO_REGISTRY_TOKEN }}
+          args: "--allow-dirty"

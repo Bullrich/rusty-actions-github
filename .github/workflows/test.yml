@@ -1,0 +1,33 @@
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+name: Continuous integration
+
+jobs:
+  test:
+    name: "Test"
+    strategy:
+      fail-fast: true
+      matrix:
+        cmd:
+          - check
+          - fmt --all -- --check
+          - clippy -- -D warnings
+          - doc
+          - test
+          - build --release
+          - bench
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - run: cargo ${{ matrix.cmd }}
+  conclude:
+    runs-on: ubuntu-latest
+    name: All tests passed
+    needs: [test]
+    steps:
+      - run: echo '### Good job! All the tests passed 🚀' >> $GITHUB_STEP_SUMMARY

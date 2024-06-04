@@ -2,7 +2,23 @@
 name = "actions-github"
 version = "0.1.0"
 edition = "2021"
+authors = ["Javier Bullrich <javier@bullrich.dev>"]
+description = "A rust translation of the helper library @actions/github to build GitHub actions using rust"
+readme = "README.md"
+repository = "https://github.com/Bullrich/rusty-actions-github"
+license = "MIT"
+keywords = ["github", "actions"]
+documentation = "https://docs.rs/actions-github/latest/actions_github/"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+json = "0.12.4"
+uuid = { version = "1.8.0", features = ["v4"] }
+
+[dev-dependencies]
+divan = "0.1.14"
+
+[[bench]]
+name = "action_speed"
+harness = false
